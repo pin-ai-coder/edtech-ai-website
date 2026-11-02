@@ -984,7 +984,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   height: auto;
   display: block;
   max-height: 420px;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center top;
 }
 
