@@ -1191,3 +1191,131 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     gap: 0.5rem;
   }
 }
+/* ===== #laws RESPONSIVE OVERRIDE ===== */
+
+/* tablets and below */
+@media (max-width: 960px) {
+  #laws .laws-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  #laws .card.glass {
+    padding: 1.35rem;
+  }
+
+  #laws .comparison-table {
+    min-width: 0;          /* remove the 700px minimum */
+    font-size: 0.85rem;
+  }
+
+  #laws .comparison-table th,
+  #laws .comparison-table td {
+    padding: 0.75rem 0.8rem;
+  }
+
+  #laws .comparison-table th {
+    white-space: normal;
+  }
+}
+
+/* phones: table rows become stacked cards */
+@media (max-width: 700px) {
+  #laws .card h3 {
+    font-size: 1.05rem;
+  }
+
+  #laws .laws-grid ul li {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  /* wrapper no longer needs its own box or sideways scroll */
+  #laws .table-wrapper {
+    overflow: visible;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  #laws .comparison-table,
+  #laws .comparison-table tbody,
+  #laws .comparison-table tr,
+  #laws .comparison-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* hide the header row (labels are added to each cell below) */
+  #laws .comparison-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  /* each row = one card */
+  #laws .comparison-table tr {
+    margin-bottom: 1rem;
+    background: rgba(0, 212, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  #laws .comparison-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  #laws .comparison-table td {
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+
+  #laws .comparison-table tr:last-child td {
+    border-bottom: 1px solid var(--border);
+  }
+
+  #laws .comparison-table td:last-child {
+    border-bottom: none;
+  }
+
+  /* first cell becomes the card title */
+  #laws .comparison-table td:first-child {
+    background: rgba(0, 212, 255, 0.1);
+    color: var(--cyan);
+    font-weight: 600;
+  }
+
+  /* small label above each cell */
+  #laws .comparison-table td::before {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  #laws .comparison-table td:nth-child(1)::before { content: "Challenge"; }
+  #laws .comparison-table td:nth-child(2)::before { content: "What could go wrong"; }
+  #laws .comparison-table td:nth-child(3)::before { content: "Our contingency plan"; }
+
+  #laws .comparison-table td:first-child::before {
+    color: var(--text-muted);
+  }
+}
+
+/* small phones */
+@media (max-width: 480px) {
+  #laws.section {
+    padding: 3rem 0;
+  }
+
+  #laws .card.glass {
+    padding: 1.1rem;
+  }
+}
