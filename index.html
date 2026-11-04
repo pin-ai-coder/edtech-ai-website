@@ -128,7 +128,10 @@ AI-supported technology can improve learning and daily life by increasing produc
     <img src="images/page-04.jpg" alt="Actors who support or are against this slide" class="slide-img" />
     <!-- click the solid box to pop up the video -->
     <button class="video-slot video-slot--actors" id="actorsVideoSlot" type="button"
-            data-video="videos/deped.mp4" data-title="DepEd" aria-label="Play DepEd video"></button>
+            data-video="videos/deped.mp4" data-title="DepEd" aria-label="Play DepEd video">
+      <span class="video-slot-icon" aria-hidden="true">&#9654;</span>
+      <span class="video-slot-label">Watch video</span>
+    </button>
   </div>
 </div>
 
@@ -222,7 +225,10 @@ AI-supported technology can improve learning and daily life by increasing produc
   <img src="images/page-06.jpg" alt="1st Solution slide" class="solution-slide" />
   <!-- click the solid box to pop up the video -->
   <button class="video-slot video-slot--sol1" id="sol1VideoSlot" type="button"
-          data-video="videos/agap.mp4" data-title="Project AGAP.AI" aria-label="Play AGAP.AI video"></button>
+            data-video="videos/agap.mp4" data-title="Project AGAP.AI" aria-label="Play AGAP.AI video">
+      <span class="video-slot-icon" aria-hidden="true">&#9654;</span>
+      <span class="video-slot-label">Watch video</span>
+    </button>
 </div>
 
 <div class="solution-content">
@@ -819,7 +825,8 @@ How it was picked: all five group members rated each solution independently agai
     <span class="video-player-title" id="videoTitle">Video</span>
     <button class="video-player-close" id="videoClose" type="button" aria-label="Close video">&times;</button>
   </div>
-  <video id="playerVideo" controls playsinline preload="none"></video>
+  <video id="playerVideo" controls playsinline preload="metadata"></video>
+  <p class="video-player-error" id="videoError" hidden></p>
 </div>
 
 <script src="script.js"></script>
@@ -831,12 +838,21 @@ How it was picked: all five group members rated each solution independently agai
   const bar     = document.getElementById('videoBar');
   const titleEl = document.getElementById('videoTitle');
   const vid     = document.getElementById('playerVideo');
+  const errEl   = document.getElementById('videoError');
   const closeBt = document.getElementById('videoClose');
   if (!player) return;
 
   function openVideo(src, title) {
-    if (vid.getAttribute('src') !== src) vid.setAttribute('src', src);
+    errEl.hidden = true;
     titleEl.textContent = title || 'Video';
+
+    // only reload if it's a different video
+    if (vid.dataset.src !== src) {
+      vid.dataset.src = src;
+      vid.src = src;               // relative path, e.g. videos/deped.mp4
+      vid.load();
+    }
+
     player.classList.add('open');
     player.setAttribute('aria-hidden', 'false');
 
@@ -847,7 +863,9 @@ How it was picked: all five group members rated each solution independently agai
       player.style.top  = Math.max(8, (innerHeight - r.height) / 2) + 'px';
       player.dataset.placed = '1';
     }
-    vid.play().catch(function () {});
+
+    const p = vid.play();
+    if (p && p.catch) p.catch(function () {});   // user can press play if blocked
   }
 
   function closeVideo() {
@@ -855,6 +873,13 @@ How it was picked: all five group members rated each solution independently agai
     player.classList.remove('open');
     player.setAttribute('aria-hidden', 'true');
   }
+
+  // if the mp4 can't load, say which file (usually a wrong path on GitHub)
+  vid.addEventListener('error', function () {
+    errEl.textContent = 'Could not load "' + (vid.dataset.src || '') +
+      '". Check that the file is in the repo, the name matches exactly (lowercase, no spaces), and the path has no leading "/".';
+    errEl.hidden = false;
+  });
 
   document.querySelectorAll('.video-slot').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -878,7 +903,6 @@ How it was picked: all five group members rated each solution independently agai
   bar.addEventListener('pointermove', function (e) {
     if (!drag) return;
     const w = player.offsetWidth;
-    // can go almost anywhere, but the bar always stays reachable
     const x = Math.min(Math.max(e.clientX - drag.dx, 80 - w), innerWidth - 80);
     const y = Math.min(Math.max(e.clientY - drag.dy, 0), innerHeight - 44);
     player.style.left = x + 'px';
