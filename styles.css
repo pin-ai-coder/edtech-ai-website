@@ -1148,3 +1148,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   max-height: none;
   object-fit: contain;
 }
+/* the wrapper becomes the positioning reference */
+#actors .slide-feature {
+  position: relative;
+}
+
+/* video box: absolute, in front, doesn't affect other elements */
+.video-slot {
+  position: absolute;
+  z-index: 10;
+
+  /* position and size as % of the slide image (matches the DepEd photo) */
+  left: 2.9%;
+  top: 12%;
+  width: 54.5%;
+  height: 50%;
+
+  border: 4px solid var(--cyan);      /* solid border */
+  background: rgba(0, 212, 255, 0.12); /* placeholder tint, remove once the video is in */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* the video fills the box exactly */
+.video-slot video,
+.video-slot iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
